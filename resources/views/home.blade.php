@@ -1,7 +1,11 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('title', 'Home')
+
+@section('content')
     <!-- Hero Section -->
     <div class="position-relative text-white">
-        <img src="/image/dashboard.png" alt="Hero Image" class="img-fluid w-100 object-cover opacity-50" style="height: 100vh; object-fit: cover;">
+        <img src="{{ asset('images/dashboard.png') }}" alt="Hero Image" class="img-fluid w-100 object-cover opacity-50" style="height: 100vh; object-fit: cover;">
         <div class="position-absolute top-50 start-0 translate-middle-y ">
             <p class="fw-bold text-uppercase ms-5 " style="font-size:6em">GAGAK PUTIH</p>
             <h2 class="fw-bold ms-5" style="font-size:3em">INDONESIA</h2>
@@ -25,16 +29,16 @@
             <div id="carouselImage" class="carousel slide col-lg-5" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="/image/aboutus1.png" alt="Gagak Putih" class="img-fluid rounded d-block">
+                        <img src="{{ asset('images/aboutus1.png') }}" alt="Gagak Putih" class="img-fluid rounded d-block">
                     </div>
                     <div class="carousel-item">
-                        <img src="/image/aboutus2.png" alt="Gagak Putih" class="img-fluid rounded d-block">
+                        <img src="{{ asset('images/aboutus2.png') }}" alt="Gagak Putih" class="img-fluid rounded d-block">
                     </div>
                     <div class="carousel-item">
-                        <img src="/image/aboutus3.png" alt="Gagak Putih" class="img-fluid rounded d-block">
+                        <img src="{{ asset('images/aboutus3.png') }}" alt="Gagak Putih" class="img-fluid rounded d-block">
                     </div>
                     <div class="carousel-item">
-                        <img src="/image/aboutus4.png" alt="Gagak Putih" class="img-fluid rounded d-block">
+                        <img src="{{ asset('images/aboutus4.png') }}" alt="Gagak Putih" class="img-fluid rounded d-block">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselImage" data-bs-slide="prev">
@@ -221,4 +225,4 @@
     </div>
 </div>
 
-</x-app-layout>
+@endsection
