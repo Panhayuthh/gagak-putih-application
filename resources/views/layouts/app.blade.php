@@ -14,7 +14,8 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+    <link rel="stylesheet" href="{{ asset('build/assets/app-Dt9apI68.css') }}">
 </head>
 <body>
     <div id="app" class="d-flex flex-column min-vh-100">
@@ -28,5 +29,7 @@
 
         @include('layouts.footer')
     </div>
+
+    <script src="{{ asset('build/assets/app-bT8T7Y_c.js') }}"></script>
 </body>
 </html>
