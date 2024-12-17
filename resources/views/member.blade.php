@@ -8,4 +8,6 @@
 
     <p>Welcome to the member area!</p>
 
+    <p>Hello world</p>
+
 @endsection
