@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
+use App\Models\MemberData;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,6 +29,10 @@ class DatabaseSeeder extends Seeder
             'isAdmin' => true,
         ]);
 
+        User::factory(8)->create();
+
         Event::factory(10)->create();
+
+        MemberData::factory(10)->create();
     }
 }

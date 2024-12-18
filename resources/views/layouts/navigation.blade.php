@@ -18,6 +18,16 @@
                     Event
                     </x-nav-link>
                 </li>
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('member.create') }}" :active="request()->routeIs('member.create')" class="nav-link text-white">
+                    Registration
+                    </x-nav-link>
+                </li>
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
+                    Member
+                    </x-nav-link>
+                </li>
             </ul>
             
             <!-- Right Side Of Navbar -->

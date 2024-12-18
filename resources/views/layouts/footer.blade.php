@@ -27,10 +27,12 @@
                 © 2024 GAGK PUTIH INDONESIA-CAMxID TEAM UMN
             </small>
 
+            @guest
             <div class="d-flex justify-content-end mt-3">
                 <a href="{{ route('register') }}">Register</a>
                 <a href="{{ route('login') }}" class="ms-3">Login</a>
             </div>
+            @endguest
         </div>
     </div>
 </footer>

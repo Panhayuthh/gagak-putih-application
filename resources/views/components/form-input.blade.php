@@ -1,4 +1,4 @@
-<div class="mb-3">
+<div class="col mb-3">
     <label for="{{ $id ?? 'input' }}" class="form-label">{{ $label }}</label>
     <input 
         type="{{ $type ?? 'text' }}" 
