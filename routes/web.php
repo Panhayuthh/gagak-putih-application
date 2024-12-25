@@ -19,6 +19,8 @@ Route::post('/registration', [MemberController::class, 'store'])->name('member.s
 
 Route::get('/members', [MemberController::class, 'index'])->name('member.index');
 
+Route::get('/class', [ClassesController::class, 'index'])->name('class.index');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

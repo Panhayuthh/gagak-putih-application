@@ -28,12 +28,17 @@
                     Member
                     </x-nav-link>
                 </li>
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('class.index') }}" :active="request()->routeIs('class.index')" class="nav-link text-white">
+                    Class
+                    </x-nav-link>
+                </li>
             </ul>
             
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 <!-- Authentication Links -->
-                {{-- @guest
+                @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -45,7 +50,7 @@
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                     @endif
-                @endGuest --}}
+                @endGuest
                 @auth
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

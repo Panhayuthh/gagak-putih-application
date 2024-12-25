@@ -54,8 +54,8 @@
     </div>
 
     <!-- Card Section -->
-    <div class="container mt-4 py-5">
-    <h2 class="text-center text-white fw-bold mb-4">SCHEDULE</h2>
+    <div class="container mt-4 pb-5">
+    <h1 class="text-center text-white fw-bold mb-5">SCHEDULE</h1>
     <div class="row justify-content-center">
         @php 
 
@@ -67,7 +67,7 @@
         
         <div class="col-md-4 mb-4">
             <div class="card" style="background-color:white; color:black; text-align:center;">
-                <h1 class="mt-2">{{ $day }}</h1>
+                <h2 class="mt-2">{{ $day }}</h1>
                 <div class="p-2">
                     @foreach ($classes as $class)
                     @if ($class->date == $day)
