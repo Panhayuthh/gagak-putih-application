@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Classes;
+use App\Models\Enrollment;
 use App\Models\Event;
 use App\Models\MemberData;
 use App\Models\User;
@@ -34,5 +36,9 @@ class DatabaseSeeder extends Seeder
         Event::factory(10)->create();
 
         MemberData::factory(10)->create();
+
+        Classes::factory(6)->create();
+
+        Enrollment::factory(10)->create();
     }
 }

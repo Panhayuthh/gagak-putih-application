@@ -56,9 +56,41 @@
     <!-- Card Section -->
     <div class="container mt-4 py-5">
     <h2 class="text-center text-white fw-bold mb-4">SCHEDULE</h2>
-    <div class="row">
-        <!-- Single Day Card -->
+    <div class="row justify-content-center">
+        @php 
+
+        $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+        @endphp
+
+        @foreach ($days as $day)
+        
         <div class="col-md-4 mb-4">
+            <div class="card" style="background-color:white; color:black; text-align:center;">
+                <h1 class="mt-2">{{ $day }}</h1>
+                <div class="p-2">
+                    @foreach ($classes as $class)
+                    @if ($class->date == $day)
+                    <div class="row p-2 mt-2">
+                        <div class="col-4">
+                            <img src="{{ $class->photo ? asset('storage/' . $class->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" alt="School" class="img-fluid rounded" style="width: 100px; height: auto;">
+                        </div>
+                        
+                        <div class="col align-self-start text-start">
+                            <p>{{ $class->location }}</p>
+                            <p>{{ $class->start_time }} - {{ $class->end_time }}</p>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        @endforeach
+
+        <!-- Single Day Card -->
+        {{-- <div class="col-md-4 mb-4">
             <div class="card" style="background-color:white; color:black; text-align:center;">
                 <h1>Monday</h1>
                 <div class="d-flex flex-row align-items-center p-2">
@@ -221,7 +253,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 

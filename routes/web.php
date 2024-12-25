@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
@@ -9,9 +10,7 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+Route::get('/home', [ClassesController::class, 'index'])->name('home');
 
 Route::get('/events', [EventController::class, 'index'])->name('event.index');
 
