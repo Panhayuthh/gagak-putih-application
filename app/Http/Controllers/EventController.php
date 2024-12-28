@@ -10,107 +10,106 @@ use Illuminate\Support\Facades\Storage;
 class EventController extends Controller
 {
     public function index() {
-        $event = Event::paginate(6);
-
+        $events = Event::paginate(6); 
+    
         if (!Auth::check()) {
-            return view('events', [
-                'events' => $event,
+            return view('events', [ 
+                'events' => $events,
             ]);
         }
-
-        $role = Auth::user()->isAdmin ? 'admin' : 'user';
-        $view = $role === 'admin' ? 'admin.events' : 'events';
-
-        return view($view, [
-            'events' => $event,
+    
+        $role = Auth::user()->isAdmin ? 'admin' : 'user'; 
+        $view = $role === 'admin' ? 'admin.events' : 'events'; 
+        return view($view, [ 
+            'events' => $events,
         ]);
-
-        // return $event;
     }
-
+    public function create()
+    {
+        return view('admin.addEvent');
+    }
     public function store(Request $request) {
-        //role auth
-
-        //validate request
         $validated = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'location' => 'required',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-            'date' => 'required',
+            'location' => 'required', 
+            'event_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'date' => 'required|date',
         ]);
-
-        if ($request->hasFile('photo')) {
+    
+        if ($request->hasFile('event_photo')) {
             try {
-                $validated['photo'] = $request->file('photo')->store('photos');
+                $validated['photo'] = $request->file('event_photo')->store('event_photos', 'public');
             } catch (\Exception $e) {
                 return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
             }
         }
-
-        //try to save the event
+    
         try {
-            $event = Event::create($validated);
+            $event = Event::create([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'location' => $validated['location'],
+                'photo' => $validated['photo'] ?? null,
+                'date' => $validated['date'],
+            ]);
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'message' => 'Error creating event',
-            //     'error' => $e->getMessage(),
-            // ], 500);
-
             return back()->with('error', 'Error creating event: ' . $e->getMessage());
         }
-
-        //return the event
-
-        return $event;
+    
+        return redirect()->route('events.index')->with('success', 'Event added successfully!');
     }
+    
+    
+    
 
     public function update(Request $request, Event $event) {
-        //role auth
-
-        //validate request
         $validated = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'location' => 'required',
-            'date' => 'required',
+            'event_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'date' => 'required|date',
         ]);
-        //check if there is a photo
-        if ($request->hasFile('photo')) {
+    
+        if ($request->hasFile('event_photo')) {
             try {
                 if ($event->photo) {
-                    Storage::delete($event->photo);
+                    Storage::disk('public')->delete($event->photo);
                 }
-
-                $validated['photo'] = $request->file('photo')->store('photos');
+    
+                $validated['photo'] = $request->file('event_photo')->store('event_photos', 'public');
             } catch (\Exception $e) {
                 return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
             }
+        } else {
+            $validated['photo'] = $event->photo;
         }
-
-        //try to update the event
+    
         try {
-            $event->update($validated);
+            $event->update([
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'location' => $validated['location'],
+                'photo' => $validated['photo'], 
+                'date' => $validated['date'],
+            ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Error updating event: ' . $e->getMessage());
         }
-
-        //return the event
-        return $event;
+    
+        return redirect()->route('events.index')->with('success', 'Event updated successfully!');
     }
+    
 
     public function destroy(Event $event) {
-        //role auth
 
-        //try to delete the event
         try {
             $event->delete();
         } catch (\Exception $e) {
             return back()->with('error', 'Error deleting event: ' . $e->getMessage());
         }
 
-        //return success message
         return back()->with('success', 'Event deleted successfully');
     }
 }

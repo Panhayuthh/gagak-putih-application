@@ -10,7 +10,16 @@ class MemberData extends Model
     /** @use HasFactory<\Database\Factories\MemberDataFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'role',
+        'gender',
+        'school',
+        'belt',
+        'medal',
+        'photo',
+    ];
+    
 
     public function user()
     {

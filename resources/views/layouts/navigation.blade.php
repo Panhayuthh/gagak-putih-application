@@ -8,13 +8,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            @can('admin')             
+             <li class="nav-item">
+                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('home')"  class="nav-link text-white">
+                    Event Management
+                    </x-nav-link>
+                </li>
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('members.index') }}">
+                    Member Management
+                    </x-nav-link>
+                </li>
+                @endcan
+
                 <li class="nav-item">
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')"  class="nav-link text-white">
                     About Us
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('event.index') }}" :active="request()->routeIs('event.index')" class="nav-link text-white" >
+                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('event.index')" class="nav-link text-white" >
                     Event
                     </x-nav-link>
                 </li>

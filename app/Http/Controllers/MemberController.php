@@ -3,62 +3,134 @@
 namespace App\Http\Controllers;
 
 use App\Models\MemberData;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 
 class MemberController extends Controller
 {
     public function index()
     {
-        $members = MemberData::with('user')->get();
-        return view('member' , compact('members'));
-        // return $members;
+        $members = MemberData::with('user')->get(); // Fetch all members with relationships if needed.
+    
+        if (!Auth::check()) { // Check if the user is not logged in.
+            return redirect()->route('login')->with('error', 'You must be logged in to view this page.');
+        }
+    
+        // Check user role
+        $role = Auth::user()->isAdmin ? 'admin' : 'user'; // Adjust based on your role determination logic.
+        $view = $role === 'admin' ? 'admin.members' : 'member'; // Choose the correct view.
+    
+        return view($view, ['members' => $members]);
     }
-
+    
     public function create() 
     {
-        return view('registration');
+        return view('admin.addMember');
     }
 
-    public function store(Request $request) {
-        dd($request->all());
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'role' => 'required|in:coach,athlete',
+        'gender' => 'required|in:Male,Female',
+        'school' => 'required|string|max:255',
+        'medal' => 'nullable|in:gold,silver,bronze',
+        'belt' => 'nullable|string|max:255',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        // Validate the request
-        $validated = $request->validate([
-            'role' => 'required',
-            'name' => 'required',
-            'email' => 'required|email',
-            'gender' => 'required',
-            'school' => 'required',
-            'belt' => 'required',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    if ($request->hasFile('photo')) {
+        try {
+            $validated['photo'] = $request->file('photo')->store('member_photos', 'public');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
+        }
+    }
 
-        //check if photo is uploaded
-        $profileImagePath = $request->hasFile('image')
-        ? $request->file('member_profile')->store('member_profiles', 'public')
-        : null;
-        
-
-        // store the user
-        $user = User::create([
+    try {
+        MemberData::create([
             'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make('password'),
-        ]);
-
-        // store the user data
-        MemberData::created([
-            'user_id' => $user->id,
             'role' => $validated['role'],
             'gender' => $validated['gender'],
             'school' => $validated['school'],
-            'belt' => $validated['belt'],
-            'photo' => $profileImagePath,
+            'medal' => $validated['medal'] ?? null,
+            'belt' => $validated['belt'] ?? null,
+            'photo' => $validated['photo'] ?? null,
         ]);
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error creating member: ' . $e->getMessage());
+    }
 
-        // redirect back
-        return redirect()->back()->with('success', 'Member created successfully');
+    return redirect()->route('members.index')->with('success', 'Member added successfully!');
+}
+
+    
+public function update(Request $request, MemberData $member) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'role' => 'required|in:coach,athlete',
+        'gender' => 'required|in:Male,Female',
+        'school' => 'required|string|max:255',
+        'medal' => 'nullable|in:gold,silver,bronze',
+        'belt' => 'nullable|string|max:255',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    if ($request->hasFile('member_photo')) {
+        try {
+            if ($member->photo) {
+                Storage::disk('public')->delete($member->photo);
+            }
+
+            $validated['photo'] = $request->file('member_photo')->store('member_photos', 'public');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
+        }
+    } else {
+        $validated['photo'] = $member->photo;
+    }
+
+    try {
+        $member->update([
+            'name' => $validated['name'],
+            'role' => $validated['role'],
+            'gender' => $validated['gender'],
+            'school' => $validated['school'], 
+            'medal' => $validated['medal'],
+            'belt' => $validated['belt'],
+            'photo' => $validated['photo']
+        ]);
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error updating member: ' . $e->getMessage());
+    }
+
+    return redirect()->route('members.index')->with('success', 'Member updated successfully!');
+}
+
+
+    
+        
+    public function destroy(MemberData $member) {
+
+        try {
+            $member->delete();
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error deleting member: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Member deleted successfully');
+    }
+    
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $members = $search
+        ? MemberData::where('name', 'like', '%' . $search . '%')->get()
+        : MemberData::all();
+            return view('admin.members', compact('members', 'search'));
     }
 }
