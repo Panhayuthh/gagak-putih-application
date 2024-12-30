@@ -7,46 +7,50 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            @can('admin')             
-             <li class="nav-item">
-                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('home')"  class="nav-link text-white">
-                    Event Management
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            @can('admin')
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')" class="nav-link text-white">
+                        Event Management
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('members.index') }}">
-                    Member Management
+                    <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')" class="nav-link text-white">
+                        Member Management
                     </x-nav-link>
                 </li>
-                @endcan
+            @endcan
 
+            @cannot('admin')
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')"  class="nav-link text-white">
-                    About Us
+                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" class="nav-link text-white">
+                        About Us
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('event.index')" class="nav-link text-white" >
-                    Event
+                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')" class="nav-link text-white">
+                        Event
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
                     <x-nav-link href="{{ route('member.create') }}" :active="request()->routeIs('member.create')" class="nav-link text-white">
-                    Registration
+                        Registration
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
                     <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
-                    Member
+                        Member
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
                     <x-nav-link href="{{ route('class.index') }}" :active="request()->routeIs('class.index')" class="nav-link text-white">
-                    Class
+                        Class
                     </x-nav-link>
                 </li>
-            </ul>
+            @endcannot
+        </ul>
+
+
             
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
