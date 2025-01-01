@@ -1,4 +1,4 @@
-<div class="container mt-3">
+{{-- <div class="container mt-3"> --}}
     <div class="d-flex content-wrap">
         <div class="modal" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -41,4 +41,4 @@
             </div>
         </div>
     </div>
-</div>
+{{-- </div> --}}

@@ -10,7 +10,7 @@
                 <p>Documentation of the matches we have participated in and the medals won by the athletes.</p>
             </div>
             @foreach($events as $event)
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="card h-100 border-0 rounded-4 overflow-hidden shadow-sm">
                     <div class="position-relative">
                         <img src="{{ $event->photo ? asset('storage/' . $event->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" 

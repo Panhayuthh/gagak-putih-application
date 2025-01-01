@@ -1,4 +1,4 @@
-<div class="container mt-5">
+{{-- <div class="container mt-5"> --}}
     @foreach($events as $event)
         <div class="modal" id="editEventModal-{{ $event->id }}" tabindex="-1" aria-labelledby="editEventModalLabel-{{ $event->id }}" aria-hidden="true">
             <div class="modal-dialog">
@@ -44,4 +44,4 @@
             </div>
         </div>
     @endforeach
-</div>
+{{-- </div> --}}

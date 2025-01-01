@@ -1,4 +1,4 @@
-<div class="container mt-5">
+{{-- <div class="container mt-5"> --}}
     <div class="d-flex flex-wrap">
         @foreach($members as $member)
             <!-- Modal -->
@@ -79,4 +79,4 @@
             </div>
         @endforeach
     </div>
-</div>
+{{-- </div> --}}

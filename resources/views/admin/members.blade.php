@@ -6,7 +6,7 @@
 @include('admin.addMember')
 @include('admin.editMember')
 
-<div class="container mt-4 p-4">
+<div class="container p-4">
             <div class="header text-center mb-4">
                 @if(session('error'))
                 <div class="alert alert-danger mt-3">{{ session('error') }}</div>
@@ -103,3 +103,5 @@
                 </table>
             </div>
         </div>
+
+@endsection

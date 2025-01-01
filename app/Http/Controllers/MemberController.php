@@ -13,22 +13,25 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = MemberData::with('user')->get(); // Fetch all members with relationships if needed.
+        $members = MemberData::with('user')->get();
     
-        if (!Auth::check()) { // Check if the user is not logged in.
-            return redirect()->route('login')->with('error', 'You must be logged in to view this page.');
+        if (!Auth::check()) {
+            return view('member', ['members' => $members]);
         }
     
-        // Check user role
-        $role = Auth::user()->isAdmin ? 'admin' : 'user'; // Adjust based on your role determination logic.
-        $view = $role === 'admin' ? 'admin.members' : 'member'; // Choose the correct view.
+        $role = Auth::user()->isAdmin ? 'admin' : 'user';
+        $view = $role === 'admin' ? 'admin.members' : 'member';
     
         return view($view, ['members' => $members]);
     }
     
     public function create() 
     {
-        return view('admin.addMember');
+        if (!Auth::check()) {
+            return view('registration');
+        } else if (Auth::user()->isAdmin) {
+            return view('admin.addMember');
+        }
     }
 
     public function store(Request $request)

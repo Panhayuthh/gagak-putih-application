@@ -8,6 +8,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {{-- @can('admin')
+                {{ dd('Gate is working') }}
+            @else
+                {{ dd('Gate failed') }}
+                {{ dd(Auth::user()) }}
+            @endcan --}}
+
             @can('admin')
                 <li class="nav-item">
                     <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')" class="nav-link text-white">
@@ -15,12 +22,11 @@
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')" class="nav-link text-white">
+                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
                         Member Management
                     </x-nav-link>
                 </li>
             @endcan
-
             @cannot('admin')
                 <li class="nav-item">
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" class="nav-link text-white">
@@ -33,13 +39,13 @@
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('member.create') }}" :active="request()->routeIs('member.create')" class="nav-link text-white">
-                        Registration
+                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
+                        Member
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
-                        Member
+                    <x-nav-link href="{{ route('member.create') }}" :active="request()->routeIs('member.create')" class="nav-link text-white">
+                        Registration
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
@@ -61,12 +67,12 @@
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                     @endif
-
+{{-- 
                     @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif
+                    @endif --}}
                 @endGuest
                 @auth
                     <li class="nav-item dropdown">

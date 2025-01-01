@@ -1,4 +1,4 @@
-<div class="container mt-5">
+{{-- <div class="container mt-5"> --}}
     <!-- Add Member Modal -->
     <div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -75,4 +75,4 @@
             </div>
         </div>
     </div>
-</div>
+{{-- </div> --}}

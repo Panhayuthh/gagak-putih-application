@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row g-3">
     @foreach($events as $event)
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <div class="card h-100 border-0 rounded-4 overflow-hidden shadow-lg">
