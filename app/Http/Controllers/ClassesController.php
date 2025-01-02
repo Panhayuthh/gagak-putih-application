@@ -10,15 +10,13 @@ class ClassesController extends Controller
 
     public function index()
     {
-        $currentRoute = Route::currentRouteName();
-        
-        if ($currentRoute === 'class.index') {
-            $classes = Classes::paginate(8);
-            return view('class', compact('classes'));
-        } elseif ($currentRoute === 'home') {
+        if (Route::currentRouteName() === 'home') {
             $classes = Classes::all();
             return view('home', compact('classes'));
-        } 
+        } else {
+            $classes = Classes::all();
+            return view('admin.schedule', compact('classes'));
+        }
     }
     
 }

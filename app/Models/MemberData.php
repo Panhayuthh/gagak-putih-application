@@ -19,10 +19,4 @@ class MemberData extends Model
         'medal',
         'photo',
     ];
-    
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

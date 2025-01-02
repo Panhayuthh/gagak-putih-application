@@ -17,8 +17,8 @@ class MemberDataFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->unique()->numberBetween(1, 10),
-            'role' => fake()->randomElement(['althlete', 'coach']),
+            'name' => fake()->name(),
+            'role' => fake()->randomElement(['athlete', 'coach']),
             'gender' => fake()->randomElement(['male', 'female']),
             'school' => fake()->sentence(),
             'belt' => fake()->randomElement(['white', 'yellow', 'orange', 'green', 'blue', 'purple', 'brown', 'black']),

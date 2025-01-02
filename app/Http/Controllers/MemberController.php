@@ -13,7 +13,7 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = MemberData::with('user')->get();
+        $members = MemberData::paginate(10);
     
         if (!Auth::check()) {
             return view('member', ['members' => $members]);
@@ -135,5 +135,12 @@ public function update(Request $request, MemberData $member) {
         ? MemberData::where('name', 'like', '%' . $search . '%')->get()
         : MemberData::all();
             return view('admin.members', compact('members', 'search'));
+    }
+
+    public function approve(MemberData $member)
+    {
+        $member->isApproved = true;
+        $member->save();
+        return redirect()->route('members.index')->with('success', 'Member approved!');
     }
 }

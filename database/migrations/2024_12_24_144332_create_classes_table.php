@@ -18,7 +18,6 @@ return new class extends Migration
                 ->constrained('users')
                 ->onDelete('set null');
             $table->string('name');
-            $table->string('description');
             $table->string('location');
             $table->string('level');
             $table->string('date');

@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'isAccepted' => true,
             'isAdmin' => true,
         ]);
 
@@ -38,7 +37,5 @@ class DatabaseSeeder extends Seeder
         MemberData::factory(10)->create();
 
         Classes::factory(6)->create();
-
-        Enrollment::factory(10)->create();
     }
 }

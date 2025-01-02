@@ -27,11 +27,11 @@
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>
                     <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" 
-                        class="img-fluid" 
+                        class="img-fluid rounded-circle" 
                         alt="Member Image" 
                         style="height: 100px; object-fit: cover; object-position: center;">
                 </td>
-                <td>{{ $member->user->name }}</td>
+                <td>{{ $member->name }}</td>
                 <td>{{ $member->gender }}</td>
                 <td>{{ $member->school }}</td>
                 <td>{{ $member->belt }}</td>
@@ -40,6 +40,9 @@
         </tbody>
         @endforeach
     </table>
+    </div>
+        {{ $members->links('pagination::bootstrap-5') }}    
+    </div>
 </div>
 
 

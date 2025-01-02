@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class EventController extends Controller
 {
     public function index() {
-        $events = Event::paginate(6); 
+        $events = Event::paginate(6);
     
         if (!Auth::check()) {
             return view('events', [ 

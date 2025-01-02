@@ -33,7 +33,7 @@ Route::prefix('events')->name('events.')->group(function () {
     });
 });
 
-Route::prefix('member')->name('members.')->group(function () {
+Route::prefix('members')->name('members.')->group(function () {
     Route::get('/', [MemberController::class, 'index'])->name('index');
     Route::get('/search', [MemberController::class, 'search'])->name('search');
 
@@ -42,14 +42,24 @@ Route::prefix('member')->name('members.')->group(function () {
         Route::get('/{member}/edit', [MemberController::class, 'edit'])->name('edit');
         Route::put('/{member}/update', [MemberController::class, 'update'])->name('update');
         Route::delete('/{member}', [MemberController::class, 'destroy'])->name('destroy');
+        Route::put('/{member}/approve', [MemberController::class, 'approve'])->name('approve');
     });
 });
 
 Route::get('/registration', [MemberController::class, 'create'])->name('member.create');
 Route::post('/registration', [MemberController::class, 'store'])->name('member.store');
 
-Route::get('/members', [MemberController::class, 'index'])->name('member.index');   
-Route::get('/class', [ClassesController::class, 'index'])->name('class.index');
+
+Route::prefix('schedule')->name('schedule.')->group(function () {
+    Route::get('/', [ClassesController::class, 'index'])->name('index');
+    
+    Route::middleware(['auth', 'isAdmin'])->group(function () {
+        Route::post('/', [ClassesController::class, 'store'])->name('store');
+        Route::get('{class}/edit', [ClassesController::class, 'edit'])->name('edit');
+        Route::put('{class}/update', [ClassesController::class, 'update'])->name('update');
+        Route::delete('{class}', [ClassesController::class, 'destroy'])->name('destroy');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

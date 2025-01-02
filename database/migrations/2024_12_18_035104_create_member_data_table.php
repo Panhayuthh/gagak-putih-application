@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('instructor_id')->nullable(); // Make it nullable
             $table->foreign('instructor_id')->references('id')->on('users')->onDelete('set null');
+            $table->string('isApproved')->default(false);
             $table->string('name');
             $table->string('role');
             $table->string('gender');

@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'isAdmin',
         'password',
     ];
 
@@ -46,18 +47,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function memberData()
-    {
-        return $this->hasOne(MemberData::class);
-    }
-
     public function classes()
     {
         return $this->hasMany(Classes::class, 'instructor_id');
-    }
-
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class);
     }
 }

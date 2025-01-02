@@ -19,11 +19,10 @@ class ClassesFactory extends Factory
     {
         return [
             'instructor_id' => function () {
-                $coach = MemberData::where('role', 'coach')->inRandomOrder()->value('user_id');
-                return $coach ?? MemberData::factory()->create(['role' => 'coach'])->user_id;
+                $coach = MemberData::where('role', 'coach')->inRandomOrder()->value('id');
+                return $coach ?? MemberData::factory()->create(['role' => 'coach'])->id;
             },
             'name' => fake()->sentence(3),
-            'description' => fake()->sentence(10),
             'level' => fake()->randomElement(['beginner', 'intermediate', 'advanced']),
             'location' => fake()->sentence(3),
             'date' => fake()->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']),

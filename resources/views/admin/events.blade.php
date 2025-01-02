@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'event Management')
 
 @section('content')
 @include('admin.addEvent')
 @include('admin.editEvent')
 
-<div class="container mt-4 p-4">
+<div class="container p-4">
         <div class="row align-items-center mb-4">
             <div class="col">
                 <h1 class="mb-3">Event Management</h1>
@@ -35,11 +35,13 @@
                 </div>
                 
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold mb-3">{{ $event->name }}</h5>
+                    <h5 class="card-title fw-bold mb-3 text-truncate d-inline-block" style="max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        {{ $event->name }}</h5>
                     
                     <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-geo-alt text-primary me-3"></i>
-                        <span class="text-muted">{{ $event->location }}</span>
+                        <span class="text-muted text-truncate d-inline-block" style="max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <i class="bi bi-geo-alt text-primary me-3"></i>{{ $event->location }}
+                        </span>
                     </div>
                     
                     <div class="d-flex align-items-center mb-3">

@@ -22,8 +22,13 @@
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
+                    <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')" class="nav-link text-white">
                         Member Management
+                    </x-nav-link>
+                </li>
+                <li class="nav-item">
+                    <x-nav-link href="{{ route('schedule.index') }}" :active="request()->routeIs('schedule.index')" class="nav-link text-white">
+                        Schedule Management
                     </x-nav-link>
                 </li>
             @endcan
@@ -39,18 +44,13 @@
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
-                    <x-nav-link href="{{ route('member.index') }}" :active="request()->routeIs('member.index')" class="nav-link text-white">
+                    <x-nav-link href="{{ route('members.index') }}" :active="request()->routeIs('members.index')" class="nav-link text-white">
                         Member
                     </x-nav-link>
                 </li>
                 <li class="nav-item">
                     <x-nav-link href="{{ route('member.create') }}" :active="request()->routeIs('member.create')" class="nav-link text-white">
                         Registration
-                    </x-nav-link>
-                </li>
-                <li class="nav-item">
-                    <x-nav-link href="{{ route('class.index') }}" :active="request()->routeIs('class.index')" class="nav-link text-white">
-                        Class
                     </x-nav-link>
                 </li>
             @endcannot
@@ -61,19 +61,19 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 <!-- Authentication Links -->
-                @guest
+                {{-- @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                     @endif
-{{-- 
+
                     @if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif --}}
-                @endGuest
+                    @endif
+                @endGuest --}}
                 @auth
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

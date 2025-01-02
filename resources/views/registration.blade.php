@@ -35,7 +35,7 @@
                 <x-form-input label="name" name="name" id="InputName" />
                 <x-form-input label="school" name="school" id="InputSchool" />
             </div>  
-            <x-form-input label="email" name="email" id="InputEmail" />     
+            <x-form-input label="email" name="email" id="InputEmail" />  
             <div class="mb-3">
                 <label class="form-label d-block">Gender</label>
                 <div class="form-check form-check-inline">
