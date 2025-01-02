@@ -15,13 +15,12 @@ class MemberController extends Controller
     {
         $members = MemberData::with('user')->get(); // Fetch all members with relationships if needed.
     
-        if (!Auth::check()) { // Check if the user is not logged in.
+        if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'You must be logged in to view this page.');
         }
     
-        // Check user role
-        $role = Auth::user()->isAdmin ? 'admin' : 'user'; // Adjust based on your role determination logic.
-        $view = $role === 'admin' ? 'admin.members' : 'member'; // Choose the correct view.
+        $role = Auth::user()->isAdmin ? 'admin' : 'user'; 
+        $view = $role === 'admin' ? 'admin.members' : 'member'; 
     
         return view($view, ['members' => $members]);
     }

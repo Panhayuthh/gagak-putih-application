@@ -37,4 +37,20 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+        /**
+     * Handle redirection after authentication.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function authenticated($request, $user)
+{
+    if ($user->isAdmin) {
+        return redirect()->route('events.index');
+    }
+
+    return redirect()->route('home');
+}
+
 }

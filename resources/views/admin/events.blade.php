@@ -7,8 +7,8 @@
 @include('admin.editEvent')
 
 <div class="container mt-4 p-4">
-        <div class="row align-items-center mb-4">
-            <div class="col">
+        <div class="row align-items-center mb-4 ">
+            <div class="col mt-0">
                 <h1 class="mb-3">Event Management</h1>
             </div>
             <div class="col-auto">

@@ -4,19 +4,19 @@
 
 @section('content')
     <div class="container px-5">
-        <div class="row g-5 justify-content-center">
+        <div class="row g-4">
             <div class="col-12 mt-5 text-center">
                 <h1 class="mb-3">EVENTS</h1>
                 <p>Documentation of the matches we have participated in and the medals won by the athletes.</p>
             </div>
             @foreach($events as $event)
-            <div class="col-lg-6">
+            <div class="col-lg-3 col-md-6"> <!-- Updated column width for 4 cards per row -->
                 <div class="card h-100 border-0 rounded-4 overflow-hidden shadow-sm">
                     <div class="position-relative">
                         <img src="{{ $event->photo ? asset('storage/' . $event->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" 
                             class="card-img-top img-fluid" 
                             alt="Event Image" 
-                            style="height: 250px; object-fit: cover; object-position: center;">
+                            style="height: 200px; object-fit: cover; object-position: center;">
                         <div class="position-absolute top-0 end-0 p-3">
                             <span class="badge bg-primary bg-opacity-75 rounded-pill">
                                 {{ $event->created_at->diffForHumans() }}
@@ -46,5 +46,4 @@
             {{ $events->links() }}
         </div>
     </div>
-
 @endsection
