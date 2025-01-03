@@ -30,12 +30,18 @@
                 </div>
             </div>
         </div>
+
+        @if ($classes->isEmpty())
+        <div class="col-12 mt-3">
+            <p class="m-0">You have no schedules.</p>
+        </div>
+        @endif
         
         @foreach($classes as $class)
         <div class="col-3">
             <div class="card bg-white">
                 <div class="card-body">
-                    <img src="https://via.placeholder.com/350x350?text=Image" 
+                    <img src="{{ $class->photo ? asset('storage/' . $class->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" 
                          class="w-100 mb-3 rounded" 
                          style="height: 150px; object-fit: cover;" 
                          alt="...">

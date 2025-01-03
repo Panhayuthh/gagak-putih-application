@@ -18,6 +18,7 @@ class Classes extends Model
         'date',
         'start_time',
         'end_time',
+        'photo',
     ];
 
     public function instructor()

@@ -1,6 +1,6 @@
 {{-- <div class="container mt-5"> --}}
     <div class="d-flex flex-wrap">
-        @foreach($members as $member)
+        @foreach($currentMembers as $member)
             <!-- Modal -->
             <div class="modal fade" id="editMemberModal-{{ $member->id }}" tabindex="-1" aria-labelledby="editMemberModalLabel-{{ $member->id }}" aria-hidden="true">
                 <div class="modal-dialog">
@@ -30,8 +30,8 @@
 
                                 <!-- Member Profile Photo -->
                                 <div class="form-group mb-3">
-                                    <label for="member_photo">Member Profile</label>
-                                    <input type="file" name="member_photo" class="form-control">
+                                    <label for="photo">Member Profile</label>
+                                    <input type="file" name="photo" class="form-control">
                                     @if ($member->photo)
                                         <img src="{{ asset('storage/' . $member->photo) }}" alt="Member Profile" class="img-fluid mt-2" style="max-height: 200px;">
                                     @endif

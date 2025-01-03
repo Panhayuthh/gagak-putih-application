@@ -15,15 +15,13 @@ class ClassesController extends Controller
             $classes = Classes::all();
             return view('home', compact('classes'));
         } else {
-            $classes = Classes::paginate(10);
+            $classes = Classes::paginate(8);
             return view('admin.schedule', compact('classes'));
         }
     }
     
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $validated = $request->validate([
             'name' => 'required',
             'location' => 'required',
@@ -33,15 +31,15 @@ class ClassesController extends Controller
             'end_time' => 'required',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+    
         if ($request->hasFile('photo')) {
             try {
-                $validated['photo'] = $request->file('photo')->store('member_photos', 'public');
+                $validated['photo'] = $request->file('photo')->store('class_photos', 'public');
             } catch (\Exception $e) {
                 return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
             }
         }
-
+    
         try {
             Classes::create([
                 'name' => $validated['name'],
@@ -55,9 +53,10 @@ class ClassesController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Error creating class: ' . $e->getMessage());
         }
-
+    
         return redirect()->route('schedule.index')->with('success', 'Class added successfully!');
     }
+    
 
     public function update(Request $request, Classes $class)
     {
@@ -68,7 +67,16 @@ class ClassesController extends Controller
             'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('photo')) {
+            try {
+                $validated['photo'] = $request->file('photo')->store('class_photos', 'public');
+            } catch (\Exception $e) {
+                return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
+            }
+        }
 
         try {
             $class->update([
@@ -78,6 +86,7 @@ class ClassesController extends Controller
                 'date' => $validated['date'],
                 'start_time' => $validated['start_time'],
                 'end_time' => $validated['end_time'],
+                'photo' => $validated['photo'] ?? null,
             ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Error updating class: ' . $e->getMessage());

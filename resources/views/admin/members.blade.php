@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'member Management')
+@section('title', 'Members Management')
 
 @section('content')
-@include('admin.addMember')
 @include('admin.editMember')
-
+@include('admin.addMember')
 <div class="container p-4">
     <div class="header text-center mb-4">
         @if(session('error'))
@@ -29,19 +28,8 @@
             </div>
         </form>
     </div>
-
-    @if (isset($results) && count($results) > 0)
-        <ul>
-            @foreach ($results as $result)
-                <li>{{ $result->name }}</li>
-            @endforeach
-        </ul>
-    @elseif (isset($results))
-        <p class="text-dark">No results found.</p>
-    @endif
-
+    <!-- Membership Requests Table -->
     <h3 class="my-4">Membership Request</h3>
-
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="table-dark">
@@ -56,48 +44,43 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($members as $index => $member)
-                @if($member->isApproved == '0')
-                    @if(count($members) == 0)
-                        <tr>
-                            <td colspan="7" class="text-center">No membership request.</td>
-                        </tr>
-                    @endif
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" alt="Profile" style="width: 45px; height: 45px"
-                                class="img-fluid rounded-circle">
-                            </td>
-                            <td>{{ $member->name }}</td>
-                            <td>{{ $member->role }}</td>
-                            <td>{{ $member->school }}</td>
-                            <td>
-                                <span class="text-muted">
-                                    <i class="bi {{ $member->gender == 'male' ? 'bi-gender-male text-primary' : 'bi-gender-female text-danger' }} me-2"></i>
-                                {{ $member->gender }}
-                                </span>
-                            </td>
-                            <td>
-                                <form action="{{ route('members.approve', ['member' => $member]) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to accept this member?')">
-                                        Approve
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endif
-                @endforeach
+                @forelse($membershipRequests as $index => $member)
+                <tr>
+                    <td>{{ $membershipRequests->firstItem() + $index }}</td>
+                    <td>
+                        <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" alt="Profile" style="width: 45px; height: 45px" class="img-fluid rounded-circle">
+                    </td>
+                    <td>{{ $member->name }}</td>
+                    <td>{{ $member->role }}</td>
+                    <td>{{ $member->school }}</td>
+                    <td>
+                        <span class="text-muted">
+                            <i class="bi {{ $member->gender == 'male' ? 'bi-gender-male text-primary' : 'bi-gender-female text-danger' }} me-2"></i>
+                            {{ $member->gender }}
+                        </span>
+                    </td>
+                    <td>
+                        <form action="{{ route('members.approve', ['member' => $member]) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('put')
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to accept this member?')">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center">No membership request.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+        {{ $membershipRequests->links('pagination::bootstrap-5') }}
     </div>
 
+    <!-- Current Members Table -->
     <h3 class="my-4">Current Member</h3>
-
     <div class="table-responsive">
-        <table class="table table-bordered table-striped ">
+        <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
                     <th scope="col">NO</th>
@@ -112,87 +95,55 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($members as $index => $member)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>
-                            <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" alt="Profile" style="width: 45px; height: 45px"
-                            class="img-fluid rounded-circle">
-                        </td>
-                        <td>{{ $member->name }}</td>
-                        <td>{{ $member->role }}</td>
-                        <td>{{ $member->school }}</td>
-                        <td>
-                            <span class="text-muted">
-                                <i class="bi {{ $member->gender == 'male' ? 'bi-gender-male text-primary' : 'bi-gender-female text-danger' }} me-2"></i>
-                                {{ $member->gender }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary bg-opacity-10 text-white">
-                            {{ $member->belt }}
-                            </span>
-                        </td>
-                        <td>
-
-                            {{ $member->medal }}
-                        </td>
-
-                        <td>
-                        {{-- <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editMemberModal-{{ $member->id }}">
-                            Edit
-                        </button>
-                        <form action="{{ route('members.destroy', ['member' => $member]) }}" method="post" class="d-inline">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this member?')">
-                                Delete
+                @forelse($currentMembers as $index => $member)
+                <tr>
+                    <td>{{ $currentMembers->firstItem() + $index }}</td>
+                    <td>
+                        <img src="{{ $member->photo ? asset('storage/' . $member->photo) : 'https://via.placeholder.com/350x350?text=Image' }}" alt="Profile" style="width: 45px; height: 45px" class="img-fluid rounded-circle">
+                    </td>
+                    <td>{{ $member->name }}</td>
+                    <td>{{ $member->role }}</td>
+                    <td>{{ $member->school }}</td>
+                    <td>
+                        <span class="text-muted">
+                            <i class="bi {{ $member->gender == 'male' ? 'bi-gender-male text-primary' : 'bi-gender-female text-danger' }} me-2"></i>
+                            {{ $member->gender }}
+                        </span>
+                    </td>
+                    <td>{{ $member->belt }}</td>
+                    <td>{{ $member->medal }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="memberActionsDropdown-{{ $member->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical me-1"></i>
                             </button>
-                        </form> --}}
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <div class="dropdown">
-                                <button class="btn btn-primary btn-sm dropdown-toggle" 
-                                        type="button" 
-                                        id="memberActionsDropdown-{{ $member->id }}" 
-                                        data-bs-toggle="dropdown" 
-                                        aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical me-1"></i> 
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" 
-                                    aria-labelledby="memberActionsDropdown-{{ $member->id }}">
-                                    <li>
-                                        <button type="button" 
-                                                class="dropdown-item" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editMemberModal-{{ $member->id }}">
-                                            <i class="bi bi-pencil me-2"></i>Edit
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="memberActionsDropdown-{{ $member->id }}">
+                                <li>
+                                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editMemberModal-{{ $member->id }}">
+                                        <i class="bi bi-pencil me-2"></i>Edit
+                                    </button>
+                                </li>
+                                <li>
+                                    <form action="{{ route('members.destroy', ['member' => $member]) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this member?')">
+                                            <i class="bi bi-trash me-2"></i>Delete
                                         </button>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('members.destroy', ['member' => $member]) }}" 
-                                            method="post" 
-                                            class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" 
-                                                    class="dropdown-item text-danger" 
-                                                    onclick="return confirm('Are you sure you want to delete this member?')">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                        </td>
-                    </tr>
-                @endforeach
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="9" class="text-center">No member found.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
-        </div>
-            {{ $members->links('pagination::bootstrap-5') }}    
-        </div>
+        {{ $currentMembers->links('pagination::bootstrap-5') }}
     </div>
 </div>
-
 @endsection

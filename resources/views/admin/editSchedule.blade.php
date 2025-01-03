@@ -8,7 +8,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('schedule.update', $class->id) }}" method="POST">
+                    <form action="{{ route('schedule.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group mb-3">
@@ -46,6 +46,10 @@
                         <div class="form-group mb-3">
                             <label for="end_time">End Time</label>
                             <input type="time" name="end_time" class="form-control" value="{{ $class->end_time }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photo" class="form-label">Profile Photo</label>
+                            <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

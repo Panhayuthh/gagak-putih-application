@@ -11,19 +11,39 @@ use Illuminate\Support\Facades\Storage;
 
 class MemberController extends Controller
 {
-    public function index()
+    // public function index()
+    // {
+    //     $members = MemberData::paginate(10);
+    
+    //     if (!Auth::check()) {
+    //         return view('member', ['members' => $members]);
+    //     }
+    
+    //     $role = Auth::user()->isAdmin ? 'admin' : 'user';
+    //     $view = $role === 'admin' ? 'admin.members' : 'member';
+    
+    //     return view($view, ['members' => $members]);
+    // }
+
+    public function index(Request $request)
     {
-        $members = MemberData::paginate(10);
-    
-        if (!Auth::check()) {
-            return view('member', ['members' => $members]);
-        }
-    
-        $role = Auth::user()->isAdmin ? 'admin' : 'user';
-        $view = $role === 'admin' ? 'admin.members' : 'member';
-    
-        return view($view, ['members' => $members]);
+        $search = $request->input('search');
+
+        $membershipRequests = MemberData::where('isApproved', '0')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10, ['*'], 'membership_requests');
+
+        $currentMembers = MemberData::where('isApproved', '1')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10, ['*'], 'current_members');
+
+        return view('admin.members', compact('membershipRequests', 'currentMembers', 'search'));
     }
+
     
     public function create() 
     {
@@ -35,87 +55,82 @@ class MemberController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'role' => 'required|in:coach,athlete',
-        'gender' => 'required|in:Male,Female',
-        'school' => 'required|string|max:255',
-        'medal' => 'nullable|in:gold,silver,bronze',
-        'belt' => 'nullable|string|max:255',
-        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
-
-    if ($request->hasFile('photo')) {
-        try {
-            $validated['photo'] = $request->file('photo')->store('member_photos', 'public');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
-        }
-    }
-
-    try {
-        MemberData::create([
-            'name' => $validated['name'],
-            'role' => $validated['role'],
-            'gender' => $validated['gender'],
-            'school' => $validated['school'],
-            'medal' => $validated['medal'] ?? null,
-            'belt' => $validated['belt'] ?? null,
-            'photo' => $validated['photo'] ?? null,
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|in:coach,athlete',
+            'gender' => 'required|in:Male,Female',
+            'school' => 'required|string|max:255',
+            'medal' => 'nullable|in:gold,silver,bronze',
+            'belt' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    } catch (\Exception $e) {
-        return back()->with('error', 'Error creating member: ' . $e->getMessage());
-    }
 
-    return redirect()->route('members.index')->with('success', 'Member added successfully!');
-}
+        if ($request->hasFile('photo')) {
+            try {
+                $validated['photo'] = $request->file('photo')->store('member_photos', 'public');
+            } catch (\Exception $e) {
+                return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
+            }
+        }
+
+        try {
+            MemberData::create([
+                'name' => $validated['name'],
+                'role' => $validated['role'],
+                'gender' => $validated['gender'],
+                'school' => $validated['school'],
+                'medal' => $validated['medal'] ?? null,
+                'belt' => $validated['belt'] ?? null,
+                'photo' => $validated['photo'] ?? null,
+            ]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error creating member: ' . $e->getMessage());
+        }
+
+        return redirect()->route('members.index')->with('success', 'Member added successfully!');
+    }
 
     
-public function update(Request $request, MemberData $member) {
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'role' => 'required|in:coach,athlete',
-        'gender' => 'required|in:Male,Female',
-        'school' => 'required|string|max:255',
-        'medal' => 'nullable|in:gold,silver,bronze',
-        'belt' => 'nullable|string|max:255',
-        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
+    public function update(Request $request, MemberData $member)
+    {
+        // dd($member, $request->all());
 
-    if ($request->hasFile('member_photo')) {
+        $validated = $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'gender' => 'required',
+            'school' => 'required',
+            'medal' => 'nullable',
+            'belt' => 'nullable',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
         try {
-            if ($member->photo) {
-                Storage::disk('public')->delete($member->photo);
+            if ($request->hasFile('photo')) {
+
+                if ($member->photo) {
+                    Storage::disk('public')->delete($member->photo);
+                }
+
+                $validated['photo'] = $request->file('photo')->store('member_photos', 'public');
             }
 
-            $validated['photo'] = $request->file('member_photo')->store('member_photos', 'public');
+            $member->update([
+                'name' => $validated['name'],
+                'role' => $validated['role'],
+                'gender' => $validated['gender'],
+                'school' => $validated['school'],
+                'medal' => $validated['medal'] ?? null,
+                'belt' => $validated['belt'] ?? null,
+                'photo' => $validated['photo'] ?? $member->photo,
+            ]);
+
+            return redirect()->route('members.index')->with('success', 'Member updated successfully!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error uploading photo: ' . $e->getMessage());
+            return back()->with('error', 'Error updating member: ' . $e->getMessage());
         }
-    } else {
-        $validated['photo'] = $member->photo;
     }
-
-    try {
-        $member->update([
-            'name' => $validated['name'],
-            'role' => $validated['role'],
-            'gender' => $validated['gender'],
-            'school' => $validated['school'], 
-            'medal' => $validated['medal'],
-            'belt' => $validated['belt'],
-            'photo' => $validated['photo']
-        ]);
-    } catch (\Exception $e) {
-        return back()->with('error', 'Error updating member: ' . $e->getMessage());
-    }
-
-    return redirect()->route('members.index')->with('success', 'Member updated successfully!');
-}
-
-
-    
         
     public function destroy(MemberData $member) {
 
