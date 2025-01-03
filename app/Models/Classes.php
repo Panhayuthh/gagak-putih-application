@@ -10,15 +10,18 @@ class Classes extends Model
     /** @use HasFactory<\Database\Factories\ClassesFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'instructor_id',
+        'name',
+        'level',
+        'location',
+        'date',
+        'start_time',
+        'end_time',
+    ];
 
     public function instructor()
     {
         return $this->belongsTo(User::class, 'instructor_id');
-    }
-
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class);
     }
 }

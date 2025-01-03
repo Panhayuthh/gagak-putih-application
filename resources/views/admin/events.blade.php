@@ -8,6 +8,15 @@
 
 <div class="container mt-4 p-4">
         <div class="row align-items-center mb-4 ">
+
+            @if(session('error'))
+            <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+            @endif
+    
+            @if(session('success'))
+            <div class="alert alert-success mt-3">{{ session('success') }}</div>
+            @endif
+            
             <div class="col mt-0">
                 <h1 class="mb-3">Event Management</h1>
             </div>

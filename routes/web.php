@@ -55,7 +55,6 @@ Route::prefix('schedule')->name('schedule.')->group(function () {
     
     Route::middleware(['auth', 'isAdmin'])->group(function () {
         Route::post('/', [ClassesController::class, 'store'])->name('store');
-        Route::get('{class}/edit', [ClassesController::class, 'edit'])->name('edit');
         Route::put('{class}/update', [ClassesController::class, 'update'])->name('update');
         Route::delete('{class}', [ClassesController::class, 'destroy'])->name('destroy');
     });

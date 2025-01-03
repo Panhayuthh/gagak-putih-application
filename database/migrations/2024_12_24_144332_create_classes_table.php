@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('date');
             $table->string('start_time');
             $table->string('end_time');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
