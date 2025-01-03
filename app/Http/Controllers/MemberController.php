@@ -27,6 +27,12 @@ class MemberController extends Controller
 
     public function index(Request $request)
     {
+        $members = MemberData::paginate(10);
+
+        if (!Auth::check()) {
+            return view('member', ['members' => $members]);
+        }
+
         $search = $request->input('search');
 
         $membershipRequests = MemberData::where('isApproved', '0')
